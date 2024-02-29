@@ -1,0 +1,21 @@
+def insert_grades(num_students):
+    grade = {}
+    for _ in range(num_students):
+        name = input("Enter student's name: ")
+        while True:
+            grade_input = input(f"Enter {name}'s grade: ")
+            if grade_input.isdigit():
+                score = int(grade_input)
+                break
+            else:
+                print("Please enter a valid integer for the grade.")
+        grade[name] = score
+    return grade
+
+num_students = input("Enter the number of students: ")
+if num_students.isdigit() and int(num_students) > 0:
+    num_students = int(num_students)
+    grade = insert_grades(num_students)
+    print("Grade dictionary:", grade)
+else:
+    print("Please enter a positive integer for the number of students.")
