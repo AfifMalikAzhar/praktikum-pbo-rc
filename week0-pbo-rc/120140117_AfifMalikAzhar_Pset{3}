@@ -1,0 +1,4 @@
+with open('Me.txt', 'w') as file:
+    file.write("Nama : Ceb\n")
+    file.write("NIM : 1211....\n")
+    file.write("Resolusi Saya di Tahun ini : ....\n")
