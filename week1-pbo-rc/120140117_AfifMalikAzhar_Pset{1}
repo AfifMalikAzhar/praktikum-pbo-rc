@@ -1,0 +1,84 @@
+import random
+
+class Robot:
+    def __init__(self, name, attack, hp, attack_accuracy):
+        self.name = name
+        self.attack = attack
+        self.max_hp = hp
+        self.hp = hp
+        self.attack_accuracy = attack_accuracy
+
+    def attack_enemy(self, enemy):
+        if random.random() < self.attack_accuracy:
+            damage = random.randint(1, self.attack)
+            enemy.take_damage(damage)
+            print(f"{self.name} attacks {enemy.name} for {damage} damage!")
+        else:
+            print(f"{self.name} misses the attack!")
+
+    def take_damage(self, damage):
+        self.hp -= damage
+        if self.hp <= 0:
+            self.hp = 0
+            print(f"{self.name} has been defeated!")
+        else:
+            print(f"{self.name} takes {damage} damage!")
+
+    def defend(self, enemy):
+        self.attack_enemy(enemy)
+        self.attack_enemy(enemy)  # Counter strike deals double damage
+        print(f"{self.name} defends and counter-strikes!")
+
+    def health_bar(self):
+        bar_length = 20
+        filled_length = int(bar_length * self.hp / self.max_hp)
+        health_bar = '[' + '#' * filled_length + '-' * (bar_length - filled_length) + ']'
+        return health_bar
+
+
+class Game:
+    def __init__(self, robot1, robot2):
+        self.robot1 = robot1
+        self.robot2 = robot2
+        self.rounds = 0
+
+    def start(self):
+        print("Let the battle begin!")
+        while self.robot1.hp > 0 and self.robot2.hp > 0:
+            self.rounds += 1
+            print(f"\nRound {self.rounds}:")
+            self.print_health()
+            self.player_action(self.robot1, self.robot2)
+            if self.robot2.hp <= 0:
+                break
+            self.robot2.attack_enemy(self.robot1)
+            self.print_health()
+        print("\nBattle ended!")
+        print(f"{self.robot1.name} HP: {self.robot1.hp}")
+        print(f"{self.robot2.name} HP: {self.robot2.hp}")
+
+    def player_action(self, player_robot, enemy_robot):
+        print(f"\n{player_robot.name}'s turn:")
+        print("1. Attack")
+        print("2. Defend")
+        choice = input("Choose your action (1/2): ")
+        if choice == "1":
+            player_robot.attack_enemy(enemy_robot)
+        elif choice == "2":
+            player_robot.defend(enemy_robot)
+        else:
+            print("Invalid choice. Try again.")
+            self.player_action(player_robot, enemy_robot)
+
+    def print_health(self):
+        print(f"{self.robot1.name} HP: {self.robot1.health_bar()}")
+        print(f"{self.robot2.name} HP: {self.robot2.health_bar()}")
+
+
+# Creating robots
+robot1 = Robot("Player", attack=10, hp=50, attack_accuracy=0.8)
+robot2 = Robot("Enemy", attack=8, hp=60, attack_accuracy=0.9)
+
+# Starting the game
+game = Game(robot1, robot2)
+game.start()
