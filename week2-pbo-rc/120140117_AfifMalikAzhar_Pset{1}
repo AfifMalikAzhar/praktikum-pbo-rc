@@ -1,0 +1,52 @@
+import random
+
+class Father:
+    def __init__(self, blood_type):
+        self.blood_type = blood_type
+
+    def get_allele(self):
+        return random.choice(self.blood_type)
+
+class Mother:
+    def __init__(self, blood_type):
+        self.blood_type = blood_type
+
+    def get_allele(self):
+        return random.choice(self.blood_type)
+
+class Child:
+    def __init__(self, father, mother):
+        self.father_allele = father.get_allele()
+        self.mother_allele = mother.get_allele()
+
+    def determine_blood_type(self):
+        alleles = [self.father_allele, self.mother_allele]
+        alleles.sort()  # sorting to easily compare the alleles
+
+        if alleles == ['A', 'A']:
+            return 'A'
+        elif alleles == ['A', 'B']:
+            return 'AB'
+        elif alleles == ['A', 'O']:
+            return 'A'
+        elif alleles == ['B', 'B']:
+            return 'B'
+        elif alleles == ['B', 'O']:
+            return 'B'
+        elif alleles == ['O', 'O']:
+            return 'O'
+
+def main():
+    father_blood_type = input("Enter father's blood type (A, B, AB, or O): ").upper()
+    mother_blood_type = input("Enter mother's blood type (A, B, AB, or O): ").upper()
+
+    father = Father(father_blood_type)
+    mother = Mother(mother_blood_type)
+
+    child = Child(father, mother)
+    child_blood_type = child.determine_blood_type()
+
+    print("Child's blood type:", child_blood_type)
+
+if __name__ == "__main__":
+    main()
