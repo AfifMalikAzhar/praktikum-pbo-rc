@@ -1,0 +1,127 @@
+import random
+
+# List kata-kata untuk tebak
+words = [
+    'algorithm', 'binary', 'boolean', 'byte', 'cache', 'compiler', 'debugger',
+    'encryption', 'framework', 'function', 'garbage', 'hash', 'index', 'iterator',
+    'javascript', 'json', 'library', 'loop', 'namespace', 'object', 'operator',
+    'overload', 'polymorphism', 'queue', 'recursion', 'serialization', 'stack',
+    'template', 'variable', 'virtual', 'web', 'xml', 'yaml', 'zip'
+]
+
+# Visualisasi Hangman
+stages = ["""
+            ------
+            |    |
+            |
+            |
+            |
+            |
+            |
+        ------------
+        """, """
+            ------
+            |    |
+            |    O
+            |
+            |
+            |
+            |
+        ------------
+        """, """
+            ------
+            |    |
+            |    O
+            |    |
+            |    |
+            |
+            |
+        ------------
+        """, """
+            ------
+            |    |
+            |    O
+            |    |
+            |    |
+            |   /
+            |
+        ------------
+        """, """
+            ------
+            |    |
+            |    O
+            |    |
+            |    |
+            |   / \\
+            |
+        ------------
+        """, """
+            ------
+            |    |
+            |    O
+            |  --|
+            |    |
+            |   / \\
+            |
+        ------------
+        """, """
+            ------
+            |    |
+            |    O
+            |  --|--
+            |    |
+            |   / \\
+            |
+        ------------
+        """]
+
+def choose_word(words):
+    return random.choice(words)
+
+def display_word(word, guessed_letters):
+    displayed_word = ''
+    for letter in word:
+        if letter in guessed_letters:
+            displayed_word += letter
+        else:
+            displayed_word += '_'
+    return displayed_word
+
+def hangman():
+    word = choose_word(words)
+    guessed_letters = []
+    attempts_left = len(stages) - 1
+
+    print("Selamat datang di permainan Hangman!")
+    print("Coba tebak kata.")
+
+    while attempts_left > 0:
+        print("\nKata :", display_word(word, guessed_letters))
+        print(stages[len(stages) - attempts_left - 1]) 
+        print("Percobaan :", attempts_left)
+        guess = input("Huruf : ").lower()
+
+        if len(guess) != 1 or not guess.isalpha():
+            print("Masukkan satu huruf.")
+            continue
+
+        if guess in guessed_letters:
+            print("Kamu telah menggunakan huruf tersebut.")
+            continue
+
+        guessed_letters.append(guess)
+
+        if guess in word:
+            print("Benar!")
+            if display_word(word, guessed_letters) == word:
+                print("Selamat! Kamu telah menebak kata :", word)
+                break
+        else:
+            print("Salah Coba Lagi.")
+            attempts_left -= 1
+
+    else:
+        print(stages[len(stages) - attempts_left - 1])
+        print("Percobaan telah habis. Kata yang ditebak adalah :", word)
+
+hangman()
