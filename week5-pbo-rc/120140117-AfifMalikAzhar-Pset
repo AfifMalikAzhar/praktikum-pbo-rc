@@ -1,0 +1,88 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class RegisterWindow:
+    def __init__(self, master, login_window):
+        self.master = master
+        self.login_window = login_window
+        self.master.title("Register")
+
+        self.label_username = tk.Label(master, text="Username:")
+        self.label_username.grid(row=0, column=0, padx=10, pady=5, sticky=tk.E)
+
+        self.label_password = tk.Label(master, text="Password:")
+        self.label_password.grid(row=1, column=0, padx=10, pady=5, sticky=tk.E)
+
+        self.entry_username = tk.Entry(master)
+        self.entry_username.grid(row=0, column=1, padx=10, pady=5)
+
+        self.entry_password = tk.Entry(master, show="*")
+        self.entry_password.grid(row=1, column=1, padx=10, pady=5)
+
+        self.button_register = tk.Button(master, text="Register", command=self.register)
+        self.button_register.grid(row=2, columnspan=2, padx=10, pady=10)
+
+    def register(self):
+        username = self.entry_username.get()
+        password = self.entry_password.get()
+
+        # Dummy registration logic, replace this with your registration logic
+        messagebox.showinfo("Registration Successful", "Registered new user: {}".format(username))
+
+        # Update login window with new username and password
+        self.login_window.update_login_info(username, password)
+
+        self.master.destroy()  # Close the registration window
+
+class LoginWindow:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Login")
+
+        self.label_username = tk.Label(master, text="Username:")
+        self.label_username.grid(row=0, column=0, padx=10, pady=5, sticky=tk.E)
+
+        self.label_password = tk.Label(master, text="Password:")
+        self.label_password.grid(row=1, column=0, padx=10, pady=5, sticky=tk.E)
+
+        self.entry_username = tk.Entry(master)
+        self.entry_username.grid(row=0, column=1, padx=10, pady=5)
+
+        self.entry_password = tk.Entry(master, show="*")
+        self.entry_password.grid(row=1, column=1, padx=10, pady=5)
+
+        self.button_login = tk.Button(master, text="Login", command=self.login)
+        self.button_login.grid(row=2, column=0, padx=5, pady=10)
+
+        self.button_register = tk.Button(master, text="Register", command=self.open_register_window)
+        self.button_register.grid(row=2, column=1, padx=5, pady=10)
+
+    def login(self):
+        username = self.entry_username.get()
+        password = self.entry_password.get()
+
+        # Dummy authentication, replace this with your authentication logic
+        if username == self.registered_username and password == self.registered_password:
+            messagebox.showinfo("Login Successful", "Welcome, {}".format(username))
+        else:
+            messagebox.showerror("Login Failed", "Invalid username or password")
+
+    def open_register_window(self):
+        register_window = tk.Toplevel(self.master)
+        register_view = RegisterWindow(register_window, self)
+
+    def update_login_info(self, username, password):
+        self.entry_username.delete(0, tk.END)
+        self.entry_username.insert(0, username)
+        self.entry_password.delete(0, tk.END)
+        self.entry_password.insert(0, password)
+        self.registered_username = username
+        self.registered_password = password
+
+def main():
+    root = tk.Tk()
+    login_window = LoginWindow(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
